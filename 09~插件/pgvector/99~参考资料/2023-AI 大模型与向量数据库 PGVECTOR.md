@@ -161,7 +161,7 @@ SELECT id FROM sift_base ORDER BY v <-> (SELECT query FROM probe) limit 1;
 
 # 如何获取 PGVECTOR？
 
-最后，我们来聊一聊，如何快速获取一个可用的 PGVECTOR ？在以前，PGVECTOR 需要自行下载编译安装，所以我提了一个 Issue 把它加入到 PostgreSQL 全球开发组的官方仓库中。你只需要正常使用 PGDG 源即可直接 `yum install pgvector_15` 完成安装。在安装了 pgvector 的数据库实例中使用 CREATE EXTENSION vector 即可启用此扩展。
+最后，我们来聊一聊，如何快速获取一个可用的 PGVECTOR？在以前，PGVECTOR 需要自行下载编译安装，所以我提了一个 Issue 把它加入到 PostgreSQL 全球开发组的官方仓库中。你只需要正常使用 PGDG 源即可直接 `yum install pgvector_15` 完成安装。在安装了 pgvector 的数据库实例中使用 CREATE EXTENSION vector 即可启用此扩展。
 
 ```sql
 CREATE EXTENSION vector;
