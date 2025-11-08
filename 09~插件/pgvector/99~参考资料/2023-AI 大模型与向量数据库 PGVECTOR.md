@@ -8,17 +8,17 @@ GPT 展现出来了强大的智能水平，它的成功有很多因素，但在�
 
 例如 OpenAI 就使用 1536 维的浮点数向量空间。当你问 ChatGPT 一个问题时，输入的文本首先被编码转换成为一个数学向量，才能作为神经网络的输入。而神经网络的直接输出结果，也是一个向量，向量被重新解码为人类的自然语言或其他形式，再呈现到人类眼前。
 
-![Embedding Model](https://assets.ng-tech.icu/item/20230521165111.png)
+![Embedding Model](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230521165111.png)
 
 人工智能大模型的“思考过程”，在数学上就是一系列向量与矩阵之间的加乘正逆运算。这种向量对于人类来说过于抽象，无法理解。但这种形式很适合使用 GPU/FPGA/ASIC 这样的专用硬件来高效实现 —— AI 有了一个硅基的仿生大脑，带有更多的神经元，更快的处理速度，以及更强大的学习算法，惊人的智能水平，高速自我复制与永生的能力。
 
 语言大模型解决的是 编码 - 运算 - 输出 的问题，但是只有计算是不够的，还有一个重要的部分是记忆。大模型本身可以视作人类公开数据集的一个压缩存储，这些知识通过训练被编码到了模型中，内化到了模型的权重参数里。而精确性的，长期性的，过程性的，大容量的外部记忆存储，就需要用到向量数据库了。
 
-![生物模型与数学模型](https://assets.ng-tech.icu/item/20230521165307.png)
+![生物模型与数学模型](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230521165307.png)
 
 所有的概念都可以用向量来表示，而向量空间有一些很好的数学性质，比如可以计算两个向量的“距离”。这意味着任意两个抽象概念之间的“相关性”，都可以用对应编码向量的距离来衡量。这个看上去简单的功能却有着非常强大的效果，例如最经典的应用场景就是搜索。比如，您可以预处理你的知识库，将每个文档都是用模型转换成抽象向量存储在向量数据库中，当你想要检索时，只需要将您的问题也用模型编码成为一个一次性的查询向量，并在数据库中找到与此查询向量“距离最近“的文档作为回答返回给用户即可。
 
-![Male-Female](https://assets.ng-tech.icu/item/20230521165401.png)
+![Male-Female](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230521165401.png)
 
 通过这种方式，一个模糊而困难的自然语言处理问题，转换成为了一个简单清晰的数学问题。而向量数据库，就可以用来高效地解决这个数学问题。
 
@@ -28,13 +28,13 @@ GPT 展现出来了强大的智能水平，它的成功有很多因素，但在�
 
 这些功能说到底都是一个共同的数学问题：向量最近邻检索（KNN）：给定一个向量，找到距离此向量最近的其他向量。典型的分析场景是聚类：将一系列向量按照距离亲疏远近分门别类，找出内在的关联结构，并对比急簇之间的差异。
 
-![TSNE Visualization of Book Embeddings](https://assets.ng-tech.icu/item/20230521165509.png)
+![TSNE Visualization of Book Embeddings](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230521165509.png)
 
 # PG 向量插件 PGVECTOR
 
 市面上有许多向量数据库产品，商业的有 Pinecone，Zilliz，开源的有 Milvus，Qdrant 等，基于已有流行数据库以插件形式提供的则有 pgvector 与 Redis Stack。在所有现有向量数据库中，pgvector 是一个独特的存在 —— 它选择了在现有的世界上最强大的开源关系型数据库 PostgreSQL 上以插件的形式添砖加瓦，而不是另起炉灶做成另一个专用的“数据库” 。pgvector 有着优雅简单易用的接口，不俗的性能表现，更是继承了 PG 生态的超能力集合。
 
-![pgvector 示意](https://assets.ng-tech.icu/item/20230521165631.png)
+![pgvector 示意](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230521165631.png)
 
 一个合格的向量数据库，首先得是一个合格的数据库，而从零开始做到这一点并不容易。比起使用一种全新的独立数据库品类，为现有数据库加装向量搜索的能力显然是一个更为务实，简单，经济的选择。
 
@@ -103,13 +103,13 @@ def query(question, limit=64):
         print("%-6d [%.3f]\t%s" % (id, distance, txt))
 ```
 
-![查询结果](https://assets.ng-tech.icu/item/20230521170845.png)
+![查询结果](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230521170845.png)
 
 # PGVECTOR 的性能
 
 当功能、正确性、安全性满足需求后，用户的目光就会转向性能。PGVECTOR 有着不错的性能表现，尽管比起专用的高性能向量计算 Library 来说有些差距，但性能对于生产环境中使用已经是绰绰有余了。对于向量数据库来说，最近邻查询的延迟是一个重要的性能指标，ANN-Benchmark 则是一个相对权威的最近邻性能评测基准[2]。pgvector 的索引算法是 ivfflat ，在几个常见的基准测试中表现如下图所示：
 
-![索引向量](https://assets.ng-tech.icu/item/20230521170922.png)
+![索引向量](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230521170922.png)
 
 为了对 pgvector 的性能表现在直觉上有一个把握，在 M1 Max 芯片 Macbook 下单核运行一些简单的测试：从 1 百万条随机 1536 维向量（正好是 OpenAI 的输出向量维度）中找出余弦距离最近的 TOP 1 ～ 50 条向量，每次耗时大约 8ms 。从 1 亿条随机 128 维向量 （SIFT 图像数据集的维度）中找出 L2 欧几里得距离 TOP 1 向量耗时 5ms，TOP 100 耗时也只要 21ms 。
 
@@ -175,4 +175,4 @@ SELECT *, vec <=> '[0,1]' AS d FROM items ORDER BY 2 LIMIT 3;
 
 更简单的选择是本地优先的开源 RDS PostgreSQL 替代 —— Pigsty ，在三月底发布的 v2.0.2 中，pgvector 已经默认启用，开箱即用。您可以在一台全新虚拟机上一键完成安装，自带时序地理空间向量插件，监控备份高可用齐全。分文不收，立等可取。
 
-![性能扩展](https://assets.ng-tech.icu/item/20230521171212.png)
+![性能扩展](https://ngte-superbed.oss-cn-beijing.aliyuncs.com/item/20230521171212.png)
